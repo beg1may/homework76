@@ -4,10 +4,35 @@ import { randomUUID } from 'crypto';
 
 const message: Router = express.Router();
 const messages: MessageId[] = [];
+const datetime = new Date().toISOString();
 
 message.get('/', (req: Request, res: Response) => {
   return res.send(messages);
 });
+
+message.get(`/:?datetime:${datetime}`,(req: Request, res: Response) => {
+  const queryDate = req.query.datetime as string;
+  const date = new Date(queryDate);
+
+  if (isNaN(date.getDate())) {
+    return res.status(400).send('Invalid date' );
+  }
+
+  let index = -1;
+  for (let i = 0; i < messages.length; i++) {
+    if (new Date(messages[i].datetime) >= date) {
+      index = i;
+      break;
+    }
+  }
+
+  if (index === -1) {
+    return res.json([]);
+  }
+
+  const dateMessages = messages.slice(index);
+  res.json(dateMessages);
+})
 
 message.post('/', (req: Request, res: Response) => {
   try {
