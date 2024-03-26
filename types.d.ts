@@ -2,9 +2,6 @@ export interface MessageId {
   id: string;
   author: string;
   message: string;
+  datetime: string;
 }
 
-export interface Messages {
-  author: string;
-  message: string;
-}
