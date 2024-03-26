@@ -4,13 +4,8 @@ import { randomUUID } from 'crypto';
 
 const message: Router = express.Router();
 const messages: MessageId[] = [];
-const datetime = new Date().toISOString();
 
-message.get('/', (req: Request, res: Response) => {
-  return res.send(messages);
-});
-
-message.get(`/:?datetime:${datetime}`,(req: Request, res: Response) => {
+message.get('/',(req: Request, res: Response) => {
   const queryDate = req.query.datetime as string;
   const date = new Date(queryDate);
 
